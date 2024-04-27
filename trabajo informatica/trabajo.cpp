@@ -1,17 +1,37 @@
 #include <stdio.h>
 #include <malloc.h>
+#define DIM 50
 
+struct habitacion {
+	int n_personas;
+	char fecha[4];
+	int n_dias;
+	char tipo_hab;
+	char parking;
+	char nombre[15];
+	char telefono[15];
+};
+struct restaurante {
+	int n_personas, opc, dia;
+	char telefono[15];
+};
 
 void menu();
+void Rhabitacion(struct habitacion*, int);
+void Rrestaurante(struct restaurante*, int);
 
 
 
 void main()
 {
+
 	menu();	//llamada a la funcion menú.
 }
 
 void menu() {
+	struct habitacion a[DIM];
+	struct restaurante r[DIM];
+
 	int opc;
 	int opc2;
 
@@ -28,6 +48,7 @@ void menu() {
 
 		switch (opc) {
 		case 1: printf("Ha introducido la opcion 1.\n");
+			Rhabitacion(a, DIM);
 
 			printf("¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
@@ -106,4 +127,22 @@ void menu() {
 
 	} while (opc < 0 || opc > 7);
 
+}
+
+void Rhabitacion(habitacion* r, int n) {
+	int i;
+	for (i = 0; i < 2; i++) {
+		printf("Introduzca n%cmero de personas\n", 163);
+		scanf_s("%d", &r[i].n_personas);
+		printf("N%cmero personas habitaci%cn %d:%d\n", 163, 162, i + 1, r[i].n_personas);
+	}
+}
+
+void Rrestaurante(restaurante* a, int n) {
+	int i;
+	for (i = 0; i < 2; i++) {
+		printf("Introduzca n%cmero de personas\n", 163);
+		scanf_s("%d", &a[i].n_personas);
+		printf("N%cmero personas habitaci%cn %d:%d\n", 163, 162, i + 1, a[i].n_personas);
+	}
 }
