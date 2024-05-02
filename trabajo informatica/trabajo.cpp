@@ -3,40 +3,46 @@
 #define DIM 50
 
 struct habitacion {
-	int n_personas;
-	char fecha[4];
+	int capacidadHab;//No rellenar al pedir datos del usuario
+	int n_personas; //No rellenar al pedir datos del usuario
+	char fecha[10];
 	int n_dias;
-	char tipo_hab;
+	char tipo_hab;//No rellenar al pedir datos del usurio
 	char parking;
 	char nombre[15];
+	char apellido[15];
 	char telefono[15];
+	char libre; //libre L ocupado O //No rellenar al pedir datos del usurio
 };
 struct restaurante {
+
 	int n_personas, opc, dia;
 	char telefono[15];
 };
 
-void menu();
-void Rhabitacion(struct habitacion*, int);
-void Rrestaurante(struct restaurante*, int);
-
+void RellenarTiposHab(struct habitacion*);
+void menu(struct habitacion*);
+void ReservaHabitacion(struct habitacion*);
+void CompletarDatosHab(struct habitacion*, int);
 
 
 void main()
 {
-
-	menu();	//llamada a la funcion menú.
+	struct habitacion a[DIM];
+	RellenarTiposHab(a); //
+	menu(a);	//llamada a la funcion menÃº.
 }
 
-void menu() {
-	struct habitacion a[DIM];
-	struct restaurante r[DIM];
+void menu(struct habitacion *a) {
+	
 
 	int opc;
 	int opc2;
 
+	
+
 	do {
-		printf("Introduzca opci%cn:\n", 162);
+		printf("Introduzca opci%cn:\n",162);
 		printf("1 Reservar una habitaci%cn:\n", 162);
 		printf("2 Consulta de reserva:\n");
 		printf("3 Cancelar reserva:\n");
@@ -48,101 +54,225 @@ void menu() {
 
 		switch (opc) {
 		case 1: printf("Ha introducido la opcion 1.\n");
-			Rhabitacion(a, DIM);
+			ReservaHabitacion(a);
+	
 
-			printf("¿Desea hacer alguna otra cosa?\n");
+			printf(" Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
-			if (opc2 == 1)
-				menu();
-			else
-				printf("¡Que pase un buen dia!");
+			if (opc2 == 1) 
 
+				 menu(a);
+			else 
+				printf("Â¡Que pase un buen dia!");
+			
 
 			break;
 
 		case 2: printf("Ha introducido la opcion 2.\n");
-
-			printf("¿Desea hacer alguna otra cosa?\n");
+				
+			printf("Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
 			if (opc2 == 1)
-				menu();
+				menu(a);
 			else
-				printf("¡Que pase un buen dia!");
+				printf("Â¡Que pase un buen dia!");
 
 			break;
 
 
 		case 3: printf("Ha introducido la opcion 3.\n");
 
-			printf("¿Desea hacer alguna otra cosa?\n");
+			printf("Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
 			if (opc2 == 1)
-				menu();
+				menu(a);
 			else
-				printf("¡Que pase un buen dia!");
+				printf("Â¡Que pase un buen dia!");
 
 			break;
 
 
 		case 4: printf("Ha introducido la opcion 4.\n");
 
-			printf("¿Desea hacer alguna otra cosa?\n");
+			printf("Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
 			if (opc2 == 1)
-				menu();
+				menu(a);
 			else
-				printf("¡Que pase un buen dia!");
+				printf("Â¡Que pase un buen dia!");
 
 			break;
 
 		case 5: printf("Ha introducido la opcion 5.\n");
 
-			printf("¿Desea hacer alguna otra cosa?\n");
+			printf("Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
 			if (opc2 == 1)
-				menu();
+				menu(a);
 			else
-				printf("¡Que pase un buen dia!");
+				printf("Â¡Que pase un buen dia!");
 
 			break;
 
 		case 6: printf("Ha introducido la opcion 6.\n");
 
-			printf("¿Desea hacer alguna otra cosa?\n");
+			printf("Â¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
 			if (opc2 == 1)
-				menu();
+				menu(a);
 			else
-				printf("¡Que pase un buen dia!");
+				printf("Â¡Que pase un buen dia!");
 
 			break;
 
+			}
+
+		} while (opc < 0 || opc > 7);
+
+}
+
+
+void RellenarTiposHab(struct habitacion *a) {
+	int i;
+	//10 hab simples 
+
+	for (i = 0; i <10; i++) {
+		a[i].capacidadHab = 1;
+		a[i].tipo_hab = 'S';
+		a[i].libre = 'L';
+	}
+	//20 hab dobles
+	for (i = 10; i < 30; i++) {
+		a[i].capacidadHab = 2;
+		a[i].tipo_hab = 'D';
+		a[i].libre = 'L';
+	}
+	//10 hab triples
+	for (i = 30; i < 40; i++) {
+		a[i].capacidadHab = 3;
+		a[i].tipo_hab = 'T';
+		a[i].libre = 'L';
+	}
+	//10 hab cuadruples
+	for (i = 40; i < 50; i++) {
+		a[i].capacidadHab = 4;
+		a[i].tipo_hab = 'C';
+		a[i].libre = 'L';
+	}
+
+
+
+}
+void ReservaHabitacion(struct habitacion *a){
+	int personas;
+	int n_habitacion=0;
+	int i;
+	do {
+		printf("Introduzca numero de personas:");
+		scanf_s("%d", &personas);
+		switch (personas) {
+		case 1: 
+
+			i = 0;
+			for (i = 0; i < 10; i++) {
+				if (a[i].libre == 'L')
+					break;
+			}
+			
+			if (i == 10) {
+				printf("No hay habitaciones simples disponibles:");
+				printf("Si desea reservar una doble vuelva al menu.");
+				menu(a);
+
+			}
+			else CompletarDatosHab(a, i);
+			
+
+			break;
+
+			case 2:
+				i = 10;
+				while (a[i].libre == 'O' || i < 30) {
+					i++;
+				}
+				if (i == 29) {
+					printf("No hay habitaciones dobles disponibles:");
+					printf("Si desea reservar una triple vuelva al menu.");
+					menu(a);
+
+				}
+				else CompletarDatosHab(a, i);
+
+
+			break;
+
+		case 3:
+			i = 30;
+			while (a[i].libre == 'O' || i < 40) {
+				i++;
+			}
+			if (i == 39) {
+				printf("No hay habitaciones triples disponibles:");
+				printf("Si desea reservar una cuadruple vuelva al menu.");
+				menu(a);
+
+			}
+			else CompletarDatosHab(a, i);
+
+
+			break;
+
+		case 4:
+			i = 40;
+			while (a[i].libre == 'O' || i < 50) {
+				i++;
+			}
+			if (i == 49) {
+				printf("No hay habitaciones cuadruples disponibles:");
+				printf("Si desea reservar otra habitacion vuelva al menu.");
+				menu(a);
+
+			}
+			else CompletarDatosHab(a, i);
+
+
+
+			break;
+
+		default: printf("Numero no valido de personas.");
 		}
-
-	} while (opc < 0 || opc > 7);
-
+	} while (personas < 0 || personas>4);
+	
 }
+void CompletarDatosHab(struct habitacion* a, int i) {
+	printf("%d", i);
+	printf("%cCu%cl ser%c su d%ca de llegada?\n", 168, 160, 160, 161);
+	gets_s(a[i].fecha);
+	getchar();
+	printf("%cCu%cnto  durar%c su estancia en noches?\n", 168,160, 160);
+	scanf_s("%d",&a[i].n_dias);
+	getchar();
+	
+	printf("%cNecesitar%c parking?\t Responda con S para si o N para no.\n",168, 160);
+	scanf_s("%c", &a[i].parking);
+	getchar();
+	 
+	 //(a[i].parking != '83' && a[i].parking != '115' && a[i].parking != '78' && a[i].parking != '110');
 
-void Rhabitacion(habitacion* r, int n) {
-	int i;
-	for (i = 0; i < 2; i++) {
-		printf("Introduzca n%cmero de personas\n", 163);
-		scanf_s("%d", &r[i].n_personas);
-		printf("N%cmero personas habitaci%cn %d:%d\n", 163, 162, i + 1, r[i].n_personas);
-	}
-}
+	printf("Escriba su nombre\n");
+	gets_s(a[i].nombre);
+	getchar();
+	printf("Escriba su apellido\n");
+	gets_s(a[i].apellido);
+	getchar();
+	printf("Escriba su n%cmero de tel%cfono\n",163,130);
+	gets_s(a[i].telefono);
+	getchar();
 
-void Rrestaurante(restaurante* a, int n) {
-	int i;
-	for (i = 0; i < 2; i++) {
-		printf("Introduzca n%cmero de personas\n", 163);
-		scanf_s("%d", &a[i].n_personas);
-		printf("N%cmero personas habitaci%cn %d:%d\n", 163, 162, i + 1, a[i].n_personas);
-	}
 }
