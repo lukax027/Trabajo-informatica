@@ -12,7 +12,7 @@ struct habitacion {
 };
 struct restaurante {
 
-	int n_personas, opc, dia;
+	int n_personas, opc, dia,hora[3],min[3];
 	char telefono[15],nombre[15],apellido[15];
 };
 
@@ -284,6 +284,8 @@ void ReservaRestaurante(struct restaurante* a) {
 }
 
 void CompletarDatosRes(struct restaurante* a, int i) {
+	int hora, minuto;
+	char separador;
 	getchar();
 
 	printf("%cCu%ntas personas ser%cn?\n", 168, 160, 160);
@@ -291,6 +293,18 @@ void CompletarDatosRes(struct restaurante* a, int i) {
 
 	printf("%cQu%c d%ca quiere reservar?\n", 168, 130, 161);
 	scanf_s("%d", & a[i].dia);
+	
+	printf("Por favor, ingresa una hora en formato xx:xx: ");
+	scanf("%d:%d", &a[i].hora, &a[i].min);
+
+	// Verificar que la hora y los minutos estén dentro de los rangos válidos
+	if ((a[i].hora >= 0 && a[i].hora <= 23) && (a[i].min >= 0 && a[i].hora.min <= 59)) {
+		printf("La hora ingresada es válida: %02d:%02d\n", hora, minuto);
+	}
+	else {
+		printf("La hora ingresada no es válida.\n");
+	}
+		
 	
 	printf("Escriba su nombre\n");
 	gets_s(a[i].nombre);
