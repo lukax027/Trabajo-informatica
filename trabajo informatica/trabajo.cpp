@@ -5,26 +5,23 @@
 struct habitacion {
 	int capacidadHab;//No rellenar al pedir datos del usuario
 	int n_personas; //No rellenar al pedir datos del usuario
-	char fecha[12];
 	int n_dias;
 	char tipo_hab;//No rellenar al pedir datos del usurio
-	char parking;
-	char nombre[15];
-	char apellido[15];
-	char telefono[15];
+	char parking, nombre[15], apellido[15], telefono[15], fecha[12];
 	char libre; //libre L ocupado O //No rellenar al pedir datos del usurio
 };
 struct restaurante {
 
 	int n_personas, opc, dia;
-	char telefono[15];
+	char telefono[15],nombre[15],apellido[15];
 };
 
 void RellenarTiposHab(struct habitacion*);
 void menu(struct habitacion*);
 void ReservaHabitacion(struct habitacion*);
 void CompletarDatosHab(struct habitacion*, int);
-
+void ReservaRestaurante(struct restaurante*);
+void CompletarDatosRes(struct habitacion*, int);
 
 void main()
 {
@@ -40,7 +37,7 @@ void menu(struct habitacion* a) {
 	int opc2;
 
 
-	
+
 	do {
 		printf("Introduzca opci%cn:\n", 162);
 		printf("1 Reservar una habitaci%cn:\n", 162);
@@ -59,9 +56,9 @@ void menu(struct habitacion* a) {
 			printf(" ¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
-			if (opc2 ==	1)
+			if (opc2 == 1)
 				menu(a);
-			else 
+			else
 				printf("¡Que pase un buen dia!");
 
 
@@ -133,7 +130,7 @@ void menu(struct habitacion* a) {
 
 	} while (opc < 0 || opc > 7);
 
-	}
+}
 
 
 
@@ -256,14 +253,14 @@ void CompletarDatosHab(struct habitacion* a, int i) {
 	getchar();
 	printf("%cCu%cnto  durar%c su estancia en noches?\n", 168, 160, 160);
 	scanf_s("%d", &a[i].n_dias);
-	
+
 
 	printf("%cNecesitar%c parking?\t Responda con S para si o N para no.\n", 168, 160);
 	do
-	scanf_s("%c", &a[i].parking);
-	
-	while 
-	(a[i].parking != 's' && a[i].parking != 'S' && a[i].parking != 'n' && a[i].parking != 'N');
+		scanf_s("%c", &a[i].parking);
+
+	while
+		(a[i].parking != 's' && a[i].parking != 'S' && a[i].parking != 'n' && a[i].parking != 'N');
 
 	printf("Escriba su nombre\n");
 	gets_s(a[i].nombre);
@@ -275,4 +272,35 @@ void CompletarDatosHab(struct habitacion* a, int i) {
 	gets_s(a[i].telefono);
 	getchar();
 
+}
+
+void ReservaRestaurante(struct restaurante* a) {
+
+	int personas, i;
+	printf("Introduzca numero de personas:");
+	scanf_s("%d", &personas);
+
+
+}
+
+void CompletarDatosRes(struct restaurante* a, int i) {
+	getchar();
+
+	printf("%cCu%ntas personas ser%cn?\n", 168, 160, 160);
+	scanf_s("%d", a[i].n_personas);
+
+	printf("%cQu%c d%ca quiere reservar?\n", 168, 130, 161);
+	scanf_s("%d", & a[i].dia);
+	
+	printf("Escriba su nombre\n");
+	gets_s(a[i].nombre);
+	getchar();
+
+	printf("Escriba su apellido\n");
+	gets_s(a[i].apellido);
+	getchar();
+
+	printf("Escriba su n%cmero de tel%cfono\n", 163, 130);
+	gets_s(a[i].telefono);
+	getchar();
 }
