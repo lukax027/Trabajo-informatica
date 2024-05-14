@@ -8,9 +8,8 @@ struct habitacion {
 	int capacidadHab;//No rellenar al pedir datos del usuario
 	int n_personas; //No rellenar al pedir datos del usuario
 	int n_dias;
-	int telefono;
 	char tipo_hab;//No rellenar al pedir datos del usurio
-	char parking, nombre[15], apellido[15], fecha[12];
+	char parking, nombre[15], apellido[15], fecha[12],telefono[10];
 	char libre; //libre L ocupado O //No rellenar al pedir datos del usurio
 	//int precioHabitacion; // Precio Habitacion
 };
@@ -38,6 +37,9 @@ void ConsultaHabitacion(struct habitacion*);
 //opcion 4
 void ReservaRestaurante(struct restaurante*);
 void CompletarDatosRes(struct restaurante*, int);
+//opcion 5
+
+//opcion 6
 void Checkout(struct habitacion*);
 
 void main()
@@ -45,8 +47,8 @@ void main()
 	
 	RellenarTiposHab(a);
 	RellenarMesas(b);
-	
 	menu();
+
 }
 
 
@@ -351,7 +353,7 @@ void CompletarDatosHab(struct habitacion* a, int i) {
 	printf("\n");
 	gets_s(a[i].apellido);
 	printf("Escriba su n%cmero de tel%cfono\n", 163, 130);
-	scanf_s("%d", &a[i].telefono);
+	gets_s(a[i].telefono);
 	
 	
 
@@ -390,7 +392,7 @@ void ConsultaHabitacion(struct habitacion* a) { //CAMBIAR
 
 			printf("\nNombre de contacto: %s %s\n", nombre, apellido);
 
-			printf("\nNumero de telefono: %d\n", a[i].telefono);
+			printf("\nNumero de telefono: %s\n", a[i].telefono);
 
 			printf("\nTipo de Habitacion: %c\n", a[i].tipo_hab);
 
@@ -411,17 +413,20 @@ void ConsultaHabitacion(struct habitacion* a) { //CAMBIAR
 
 
 void ReservaRestaurante(struct restaurante* b) {
-
 	int i;
-	for (i = 0; i < 30; i++) {
-		if (b[i].libre == 'L')
-			break;
+	int mesa_libre=0;
+	for (i = 0; i < DIMr && mesa_libre == 0; i++) {
+		if (b[i].libre == 'L') { /* Se ha encontrado habitación LIBRE */
+			mesa_libre = 1;
+			b[i].libre = 'O';
+		}
+
 	}
-	b[i].libre = 'O';
 	
-	if (i == 29) {
-		printf("No hay mesas disponibles:");
-		printf("Si desea hacer otro cosa vuelva al menu");
+	
+	if (i == DIMr-1) {
+		printf("No hay mesas disponibles:\n");
+		printf("Si desea hacer otro cosa vuelva al menu\n");
 		
 		menu();
 
@@ -454,7 +459,7 @@ void CompletarDatosRes(struct restaurante* b, int i) {
 		printf("La hora ingresada no es válida.\n");
 	}
 	
-
+	getchar();
 	printf("Escriba su nombre\n");
 	gets_s(b[i].nombre);
 	
@@ -497,9 +502,9 @@ void Checkout(struct habitacion* a) {
 
 			printf("\nNombre de contacto: %s %s\n", nombre, apellido);
 
-			printf("\nN%cmero de tel%cfono: %d\n", 163, 130,  a[i].telefono);
+			printf("\nN%cmero de tel%cfono: %s\n", 163, 130,  a[i].telefono);
 
-			printf("\nTipo de Habitaci%cn: %c\n", 163, 162, a[i].tipo_hab);
+			printf("\nTipo de Habitaci%cn: %c\n", 162, a[i].tipo_hab);
 
 			if (a[i].tipo_hab == 'S')
 				precio = 50;
