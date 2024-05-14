@@ -34,11 +34,15 @@ void ReservaHabitacion(struct habitacion*);
 void CompletarDatosHab(struct habitacion*, int);
 //opcion 2
 void ConsultaHabitacion(struct habitacion*);
+//opcion 3
+void CancelarReservaHab(struct habitacion*);
+void ReiniciarHabitacion(struct habitacion*, int);
 //opcion 4
 void ReservaRestaurante(struct restaurante*);
 void CompletarDatosRes(struct restaurante*, int);
 //opcion 5
-
+void CancelarReservaRes(struct restaurante*);
+void ReiniciarMesa(struct restaurante*, int);
 //opcion 6
 void Checkout(struct habitacion*);
 
@@ -64,7 +68,7 @@ void menu() {
 		printf("            INTRODUZCA OPCI%CN DE MENU:\n\n", 162);
 		printf("        1 - Reservar una habitaci%cn:\n\n", 162);
 		printf("        2 - Consulta de reserva:\n\n");
-		printf("        3 - Cancelar reserva:\n\n");
+		printf("        3 - Cancelar reserva de habitaciò:\n\n");
 		printf("        4 - Reserva del restaurante:\n\n");
 		printf("        5 - Cancelar reserva del restaurante:\n\n");
 		printf("        6 - Realizar checkout:\n\n");
@@ -108,6 +112,8 @@ void menu() {
 
 		case 3: printf("Ha introducido la opcion 3: CANCELAR RESERVA\n");
 
+            CancelarReservaHab(a);
+
 			printf("¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
 			scanf_s("%d", &opc2);
@@ -134,6 +140,8 @@ void menu() {
 			break;
 
 		case 5: printf("Ha introducido la opcion 5: CANCELAR RESERVA RESTAURANTE\n");
+
+            CancelarReservaRes(b);
 
 			printf("¿Desea hacer alguna otra cosa?\n");
 			printf("Introduzca 1 para volver al menu o 0 para salir del programa:");
@@ -233,7 +241,7 @@ void ReservaHabitacion(struct habitacion* a) {
 		switch (personas) {
 		case 1: /*BUSCAMOS HABITACION SIMPLE*/
 
-
+            int i = 0;
 			for (i = 0; i < 10 && encontradoLibre == 0; i++) {
 				if (a[i].libre == 'L') { /* Se ha encontrado habitación LIBRE */
 					encontradoLibre = 1;
@@ -324,7 +332,21 @@ void ReservaHabitacion(struct habitacion* a) {
 	} while (personas < 0 || personas>4);
 
 	CompletarDatosHab(a, i);
-	printf("Habitacion %d reservada\n", i);
+	int h = 2;
+	while (h != 1 && h != 0)
+	{
+		printf("\nEscribe 1 si quiere confirmar su reserva, 0 si quiere cancelarla\n");
+		scanf_s("%d", &h);
+	}
+	if (h == 1) {
+		printf("Habitacion %d reservada\n", i);
+	}
+	else {
+		ReiniciarHabitacion(a, i);
+		printf("\nSe ha cancelado la reserva\n");
+	}
+		
+
 }
 /***********************************************************************/
 /*             COMPLETAR DATOS DE LA HABITACION                        */
@@ -350,21 +372,17 @@ void CompletarDatosHab(struct habitacion* a, int i) {
 	printf("\n");
 	
 	printf("    Escriba su apellido:");
-	printf("\n");
 	gets_s(a[i].apellido);
+	printf("\n");
 	printf("Escriba su n%cmero de tel%cfono\n", 163, 130);
 	gets_s(a[i].telefono);
-	
-	
-
-	printf("****** HABITACION RESERVADA ******\n");
 
 }
 
 /*************************************************************************************/
-/*        Funcion: Consultar Datos de la Habitación, a partir del número de telefono */
-/*                           COMPLETAR DATOS DE LA HABITACION                        */
-/************************************************************************************/
+/*        Funcion: Consultar Datos de la Habitación, a partir del número del nombre  */
+/*									y el apellido                                    */  
+/*************************************************************************************/
 void ConsultaHabitacion(struct habitacion* a) { //CAMBIAR
 	int i;
 	char nombre[15], apellido[15];
@@ -431,12 +449,27 @@ void ReservaRestaurante(struct restaurante* b) {
 		menu();
 
 	}
-	else
-	{
-		CompletarDatosRes(b, i);
-		printf("Mesa %d reservada\n", i);
-	}
+CompletarDatosRes(b, i);
+int h = 2;
+while (h != 1 && h != 0)
+{
+	printf("\nEscribe 1 si quier confirmar su reserva y 0 si quiere cancelarla\n");
+	scanf_s("%d", &h);
 }
+if (h == 1) {
+	 printf("Mesa %d reservada\n", i);
+
+    } 
+    else {
+	ReiniciarMesa(b, i);
+	printf("\nSe ha cancelado la reserva\n");
+
+}
+menu();
+
+	}
+
+
 
 
 void CompletarDatosRes(struct restaurante* b, int i) {
@@ -471,6 +504,115 @@ void CompletarDatosRes(struct restaurante* b, int i) {
 	printf("Escriba su n%cmero de tel%cfono\n", 163, 130);
 	gets_s(b[i].telefono);
 	
+}
+
+/*****************************************************************************************/
+/*        Funcion: Restablecer todos los campos de la habitación a sus valores iniciales */                      
+/*****************************************************************************************/
+void ReiniciarHabitacion(struct habitacion* a, int i) {
+	int n;
+	for (n = 0; n < 14; n++)
+	{
+		a[i].nombre[n] = '\0';
+		a[i].apellido[n] = '\0';
+		a[i].telefono[n] = '\0';
+	}
+	
+	a[i].n_personas = '\0';
+	a[i].n_dias = 0;
+	a[i].parking = '\0';
+	a[i].libre = 'L';
+
+}
+
+/**************************************************************************************************************/
+/*        Funcion: Hace que la habitacion vuelva a estar disponible y llama a la funcion ReiniciarHabitacion  */
+/**************************************************************************************************************/
+void CancelarReservaHab(struct habitacion* a) {
+
+	int i; 
+	char nombre[15], apellido[15],telefono[15];
+	getchar();
+	printf("Introduzca los siguientes datos:\n");
+	printf("\nNombre:");
+	gets_s(nombre);
+
+	printf("\nApellido:");
+	gets_s(apellido);
+
+    printf("\nTelefono:");
+	gets_s(telefono);
+
+
+	int w = 0;
+	for (i = 0; i < DIM; i++) 
+	{
+		
+		if ((strcmp(a[i].nombre, nombre) == 0) && (strcmp(a[i].apellido, apellido) == 0) && (strcmp(a[i].telefono, telefono)==0))
+		{
+		
+			ReiniciarHabitacion(a, i);
+			a[i].libre = 'L';
+			w = 1;
+		}
+	}
+	if (w == 0)
+	{
+		printf("Ninguna habitacion coincide con los datos dados\n");
+	}
+	else
+		printf("Su cancelacion se ha realizado correctamenete\n");
+
+}
+
+void ReiniciarMesa(struct restaurante* b, int i) {
+	int n;
+	for (n = 0; n < 14; n++)
+	{
+		b[i].nombre[n] = '\0';
+		b[i].apellido[n] = '\0';
+		b[i].telefono[n] = '\0';
+	}
+
+	b[i].n_personas = 0;
+	b[i].opc = 0;
+	b[i].dia = 0;
+	b[i].hora = 0;
+	b[i].min = 0;
+	b[i].libre = 'L';
+
+}
+
+void CancelarReservaRes(struct restaurante* b) {
+
+	int i;
+	char nombre[15], apellido[15], telefono[15];
+	getchar();
+	printf("Introduzca los siguientes datos:\n");
+	printf("\nNombre:");
+	gets_s(nombre);
+
+	printf("\nApellido:");
+	gets_s(apellido);
+
+	printf("\nEscriba su n%cmero de tel%cfono\n", 163, 130);
+	gets_s(telefono);
+	int w = 0;
+	for (i = 0; i < DIM; i++)
+	{
+		if ((strcmp(b[i].nombre, nombre) == 0) && (strcmp(b[i].apellido, apellido) == 0) && (b[i].telefono == telefono))
+		{
+
+		ReiniciarMesa(b, i);
+		w = 1;
+	    }
+	}
+	if (w == 0)
+	{
+		printf("Ninguna mesa coincide con los datos dados\n");
+	}
+	else
+		printf("Su cancelacion se ha realizado correctamenete\n");
 }
 
 void Checkout(struct habitacion* a) {
