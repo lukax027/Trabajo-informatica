@@ -50,7 +50,7 @@ FILE* hotel, * restaurante;
 
 
 void LeerHabitacionesArchivo(struct habitacion*, FILE*); //Cargar desde archivo
-//void LeerMesasRestaurante(struct restaurante*, FILE*);   //Cargar desde archivo
+void LeerMesasRestaurante(struct restaurante*, FILE*);   //Cargar desde archivo
 
 void RellenarTiposHab(struct habitacion*);
 void RellenarMesas(struct restaurante*);
@@ -104,7 +104,7 @@ void main() {
 			RellenarTiposHab(a);
 		}
 		else {
-			
+
 			printf("Fichero no vacío\n");
 			LeerHabitacionesArchivo(a, hotel);
 		}
@@ -113,6 +113,25 @@ void main() {
 	else {
 		printf("No existe el archivo\n");
 		RellenarTiposHab(a);
+	}
+	fopen_s(&restaurante, "ReservasRestaurante.dat", "r");
+	if (restaurante != NULL) {
+		printf("Archivo abierto correctamente\n");
+		fseek(hotel, 0, SEEK_END);
+		if (ftell(restaurante) == 0) {
+			printf("Fichero vacío\n");
+			RellenarMesas(b);
+		}
+		else {
+
+			printf("Fichero no vacío\n");
+			LeerMesasRestaurante(b, restaurante);
+		}
+		fclose(restaurante);
+	}
+	else {
+		printf("No existe el archivo\n");
+		RellenarMesas(b);
 	}
 
 	menu();
@@ -201,8 +220,8 @@ void menu() {
 		else {
 			fopen_s(&hotel, "ReservasHabitaciones.dat", "w+");
 			RellenarHabitacionesArchivo(a, hotel);
-			
-			//RellenarMesasRestauranteArchivo(b, restaurante);
+			fopen_s(&restaurante, "ReservasMesas.dat", "w+");
+			RellenarMesasRestauranteArchivo(b, restaurante);
 			printf("¡ QUE PASE UN BUEN DIA !");
 		}
 
@@ -219,71 +238,90 @@ void LeerHabitacionesArchivo(struct habitacion* a, FILE* hotel) {
 		if (fscanf_s(hotel, "%d", &a[i].capacidadHab) != 1) break;
 		if (fscanf_s(hotel, "%d", &a[i].n_personas) != 1) break;
 		if (fscanf_s(hotel, "%d", &a[i].n_dias) != 1) break;
-		if (fscanf_s(hotel, " %c", &a[i].tipo_hab, 1) != 1) break; 
-		if (fscanf_s(hotel, " %c", &a[i].parking, 1) != 1) break;  
-		if (fscanf_s(hotel, "%14s", a[i].nombre, (unsigned)_countof(a[i].nombre)) != 1) break;
-		if (fscanf_s(hotel, "%14s", a[i].apellido, (unsigned)_countof(a[i].apellido)) != 1) break;
-		if (fscanf_s(hotel, "%11s", a[i].fecha, (unsigned)_countof(a[i].fecha)) != 1) break;
-		if (fscanf_s(hotel, "%9s", a[i].telefono, (unsigned)_countof(a[i].telefono)) != 1) break;
-		if (fscanf_s(hotel, " %c", &a[i].libre, 1) != 1) break; 
+		if (fscanf_s(hotel, " %c", &a[i].tipo_hab, 1) != 1) break;
+		if (fscanf_s(hotel, " %c", &a[i].parking, 1) != 1) break;
+		if (fscanf_s(hotel, "%s", a[i].nombre, (unsigned)_countof(a[i].nombre)) != 1) break;
+		if (fscanf_s(hotel, "%s", a[i].apellido, (unsigned)_countof(a[i].apellido)) != 1) break;
+		if (fscanf_s(hotel, "%s", a[i].fecha, (unsigned)_countof(a[i].fecha)) != 1) break;
+		if (fscanf_s(hotel, "%s", a[i].telefono, (unsigned)_countof(a[i].telefono)) != 1) break;
+		if (fscanf_s(hotel, " %c", &a[i].libre, 1) != 1) break;
 	}
 }
 
 
 void RellenarHabitacionesArchivo(struct habitacion* a, FILE* hotel) {
-	
-		for (int i = 0; i < DIM; i++) {
 
-			fprintf(hotel, "%d", a[i].nroHabitacion);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%d", a[i].capacidadHab);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%d", a[i].n_personas);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%d", a[i].n_dias);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%c", a[i].tipo_hab);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%c", a[i].parking);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%s", a[i].nombre);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%s", a[i].apellido);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%s", a[i].fecha);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%s", a[i].telefono);
-			fprintf(hotel, "\t");
-			fprintf(hotel, "%c", a[i].libre);
-			fprintf(hotel, "\n");
-		}
-		
-	                    
-		fclose(hotel);
-	
+	for (int i = 0; i < DIM; i++) {
+
+		fprintf(hotel, "%d", a[i].nroHabitacion);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%d", a[i].capacidadHab);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%d", a[i].n_personas);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%d", a[i].n_dias);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%c", a[i].tipo_hab);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%c", a[i].parking);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%s", a[i].nombre);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%s", a[i].apellido);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%s", a[i].fecha);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%s", a[i].telefono);
+		fprintf(hotel, "\t");
+		fprintf(hotel, "%c", a[i].libre);
+		fprintf(hotel, "\n");
+	}
+
+
+	fclose(hotel);
+
 
 }
 void RellenarMesasRestauranteArchivo(struct restaurante* b, FILE* restaurante) {
 	for (int i = 0; i < DIM; i++) {
 		fprintf(restaurante, "%d", b[i].n_personas);
-		fprintf(restaurante, "|");
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, "%d:%d", b[i].hora, b[i].min);
-		fprintf(restaurante, "|");
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, " %s", b[i].nombre);
-		fprintf(restaurante, "|");
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, " %s", b[i].apellido);
-		fprintf(restaurante, "|");
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, " %s", b[i].fecha);
-		fprintf(restaurante, "|");
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, " %s", b[i].telefono);
-		fprintf(restaurante, "|");
-		fprintf(restaurante, " %s", b[i].fecha);
+		fprintf(restaurante, "\t");
 		fprintf(restaurante, "\n");
 
 
 
 	}
 	fclose(restaurante);
+}
+
+void LeerMesasRestaurante(struct restaurante* b, FILE * restaurante) {
+		fseek(restaurante, 0, SEEK_SET);
+		for (int i = 0; i < DIMr; i++) {
+			if(fscanf_s(restaurante, "%d", &b[i].n_personas)!=1) break;
+			
+			if(fscanf_s(restaurante, "%d:%d", &b[i].hora, b[i].min) != 1) break;
+			
+			if(fscanf_s(restaurante, " %s", b[i].nombre, (unsigned)_countof(b[i].nombre)) != 1) break;
+	
+			if(fscanf_s(restaurante, " %s", b[i].apellido, (unsigned)_countof(b[i].apellido)) != 1) break;
+		
+			if(fscanf_s(restaurante, " %s", b[i].fecha, (unsigned)_countof(b[i].fecha)) != 1) break;
+			
+			if(fscanf_s(restaurante, " %s", b[i].telefono, (unsigned)_countof(b[i].telefono)) != 1) break;
+		
+			
+		}
+	
 }
 
 /**********************************************************************************/
@@ -365,7 +403,7 @@ void ReservaHabitacion(struct habitacion* a) {
 		scanf_s("%d", &personas);
 		switch (personas) {
 		case 1: /*BUSCAMOS HABITACION SIMPLE*/
-			
+
 			for (i = 0; i < 10 && encontradoLibre == 0; i++) {
 				if (a[i].libre == 'L') { /* Se ha encontrado habitación LIBRE */
 					encontradoLibre = 1;
@@ -374,7 +412,7 @@ void ReservaHabitacion(struct habitacion* a) {
 
 				}
 			}
-			
+
 			if (encontradoLibre == 0) { //No se han encontrado habitaciones simples Libres
 				printf("No hay habitaciones simples disponibles:");
 				printf("Si desea reservar una doble vuelva al menu.");
@@ -550,7 +588,7 @@ void ConsultaHabitacion(struct habitacion* a) {
 /*************************************************************************************/
 
 void ReservaRestaurante(struct restaurante* b) {
-	int i, nroMesa=0;
+	int i, nroMesa = 0;
 	int mesa_libre = 0; // Mesa Asignada
 	for (i = 0; i < DIMr && mesa_libre == 0; i++) {
 		if (b[i].libre == 'L') { /* Se ha encontrado mesa LIBRE */
@@ -600,7 +638,7 @@ void CompletarDatosRes(struct restaurante* b, int i) {
 	printf("%cCu%cntas personas ser%cn?\n", 168, 160, 160);
 	scanf_s("%d", &b[i].n_personas);
 	getchar();
-	printf("%%cQu%c d%ca quiere reservar? (Recuerde formato DD/MM/YYYY)?\n", 168, 130, 161);
+	printf("%cQu%c d%ca quiere reservar? (Recuerde formato DD/MM/YYYY)?\n", 168, 130, 161);
 	gets_s(b[i].fecha);
 
 	int horacorrecta = 0;
@@ -846,7 +884,7 @@ void Checkout(struct habitacion* a) {
 
 		printf("Precio total: %d%c\n", (a[nroHabitacion].n_dias) * precio, 36);
 
-		printf("Checkout de la habitacion %d realizado. Que pase un buen d%ca.\n",nroHabitacion, 161);
+		printf("Checkout de la habitacion %d realizado. Que pase un buen d%ca.\n", nroHabitacion, 161);
 		ReiniciarHabitacion(a, nroHabitacion);
 
 	}
